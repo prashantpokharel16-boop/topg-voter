@@ -15,37 +15,23 @@ def run_vote():
 
         print("Opening vote page...")
         page.goto(VOTE_URL, wait_until="networkidle")
-        time.sleep(random.uniform(3, 6))
 
-        # Fill username field
-        print(f"Filling username: {MINECRAFT_USERNAME}")
+        time.sleep(random.uniform(2, 5))
+
+        print(f"Entering username: {MINECRAFT_USERNAME}")
         page.fill('input[name="voter_name"]', MINECRAFT_USERNAME)
+
         time.sleep(random.uniform(1, 3))
 
-        # Click the Submit button
-        print("Clicking Submit...")
-        page.click('input[type="submit"], button[type="submit"]')
-        time.sleep(6)
+        print("Submitting vote...")
+        page.click('button[type="submit"]')
 
-        # Save screenshot to check result
+        time.sleep(5)
+
         page.screenshot(path="vote_result.png")
-        print("Done! Check vote_result.png to see if it succeeded.")
+        print("Done. Screenshot saved.")
 
         browser.close()
 
 if __name__ == "__main__":
-    run_vote()                    print("SUCCESS: Vote confirmed by website!")
-                else:
-                    print("WARNING: Clicked, but success message not found. TopG might be blocking the IP.")
-            else:
-                print("ERROR: Username field not found. Page might be blocked by Cloudflare.")
-                page.screenshot(path="blocked.png")
-
-        except Exception as e:
-            print(f"Error occurred: {e}")
-            page.screenshot(path="error.png")
-
-        browser.close()
-
-if __name__ == "__main__":
-    run_vote()    run_vote()
+    run_vote()

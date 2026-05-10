@@ -1,5 +1,6 @@
 import time
 import random
+import os
 from playwright.sync_api import sync_playwright
 
 MINECRAFT_USERNAME = "SAROJGMG"
@@ -15,23 +16,27 @@ def run_vote():
 
         print("Opening vote page...")
         page.goto(VOTE_URL, wait_until="networkidle")
+        time.sleep(random.uniform(3, 6))
 
-        time.sleep(random.uniform(2, 5))
-
-        print(f"Entering username: {MINECRAFT_USERNAME}")
+        print(f"Filling username: {MINECRAFT_USERNAME}")
         page.fill('input[name="voter_name"]', MINECRAFT_USERNAME)
-
         time.sleep(random.uniform(1, 3))
 
-        print("Submitting vote...")
-        page.click('button[type="submit"]')
+        print("Clicking Submit...")
+        page.click('input[type="submit"], button[type="submit"]')
+        time.sleep(6)
 
-        time.sleep(5)
+        # Save screenshot with absolute path
+        screenshot_path = os.path.join(os.getcwd(), "vote_result.png")
+        page.screenshot(path=screenshot_path)
+        print(f"Screenshot saved to: {screenshot_path}")
 
-        page.screenshot(path="vote_result.png")
-        print("Done. Screenshot saved.")
+        # Print page content so we can see result in logs
+        print("Page title:", page.title())
+        print("Page URL:", page.url)
+        print("Page content snippet:", page.content()[:500])
 
         browser.close()
 
 if __name__ == "__main__":
-    run_vote()
+    run_vote()    run_vote()

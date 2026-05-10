@@ -26,12 +26,23 @@ def run_vote():
         page.click('input[type="submit"], button[type="submit"]')
         time.sleep(6)
 
-        # Save screenshot with absolute path
+        # Check if vote was successful
+        content = page.content()
+        if "thank" in content.lower() or "success" in content.lower() or "voted" in content.lower():
+            print("✅ VOTE SUCCESS!")
+        elif "already" in content.lower():
+            print("⏰ Already voted - cooldown not finished yet")
+        elif "captcha" in content.lower() or "hcaptcha" in content.lower():
+            print("🚫 BLOCKED BY CAPTCHA")
+        else:
+            print("❓ UNKNOWN RESULT - check screenshot")
+
+        # Save screenshot
         screenshot_path = os.path.join(os.getcwd(), "vote_result.png")
         page.screenshot(path=screenshot_path)
         print(f"Screenshot saved to: {screenshot_path}")
 
-        # Print page content so we can see result in logs
+        # Print page info for logs
         print("Page title:", page.title())
         print("Page URL:", page.url)
         print("Page content snippet:", page.content()[:500])
@@ -39,4 +50,4 @@ def run_vote():
         browser.close()
 
 if __name__ == "__main__":
-    run_vote()    run_vote()
+    run_vote()

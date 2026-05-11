@@ -15,18 +15,44 @@ def run_vote():
         page = context.new_page()
 
         print("Opening vote page...")
-        page.goto(VOTE_URL, wait_until="networkidle")
-        time.sleep(random.uniform(3, 6))
+        page.goto(VOTE_URL, wait_until="domcontentloaded")
+        time.sleep(8)
 
+        # Step 1 — Click the "Vote for server" button to open the modal
+        print("Opening vote modal...")
+        try:
+            page.click('a:has-text("Vote for server")', timeout=10000)
+            print("Clicked Vote for server link")
+        except:
+            try:
+                page.click('button:has-text("Vote")', timeout=10000)
+                print("Clicked Vote button")
+            except:
+                print("❌ Could not open vote modal")
+
+        time.sleep(4)
+
+        # Step 2 — Now fill the username field inside the modal
         print(f"Filling username: {MINECRAFT_USERNAME}")
-        page.fill('input[name="voter_name"]', MINECRAFT_USERNAME)
-        time.sleep(random.uniform(1, 3))
+        try:
+            page.fill('input[name="voter_name"]', MINECRAFT_USERNAME, timeout=15000)
+            print("Username filled!")
+        except:
+            print("❌ Could not find username field")
 
-        print("Clicking Submit...")
-        page.click('input[type="submit"], button[type="submit"]')
+        time.sleep(2)
+
+        # Step 3 — Click Submit
+        print("Submitting vote...")
+        try:
+            page.click('button[type="submit"], input[type="submit"]', timeout=10000)
+            print("Submit clicked!")
+        except:
+            print("❌ Could not click submit")
+
         time.sleep(6)
 
-        # Check if vote was successful
+        # Check result
         content = page.content()
         if "thank" in content.lower() or "success" in content.lower() or "voted" in content.lower():
             print("✅ VOTE SUCCESS!")
@@ -41,11 +67,9 @@ def run_vote():
         screenshot_path = os.path.join(os.getcwd(), "vote_result.png")
         page.screenshot(path=screenshot_path)
         print(f"Screenshot saved to: {screenshot_path}")
-
-        # Print page info for logs
         print("Page title:", page.title())
         print("Page URL:", page.url)
-        print("Page content snippet:", page.content()[:500])
+        print("Page content snippet:", page.content()[:800])
 
         browser.close()
 

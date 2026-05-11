@@ -18,23 +18,22 @@ def run_vote():
         page.goto(VOTE_URL, wait_until="domcontentloaded")
         time.sleep(8)
 
-        # Step 1 — Click the "Vote for server" button to open the modal
-        print("Opening vote modal...")
-        try:
-            page.click('a:has-text("Vote for server")', timeout=10000)
-            print("Clicked Vote for server link")
-        except:
-            try:
-                page.click('button:has-text("Vote")', timeout=10000)
-                print("Clicked Vote button")
-            except:
-                print("❌ Could not open vote modal")
+        # Print ALL input fields found on page so we can see exact selectors
+        inputs = page.query_selector_all('input')
+        print(f"Found {len(inputs)} input fields:")
+        for i, inp in enumerate(inputs):
+            print(f"  Input {i}: name={inp.get_attribute('name')} type={inp.get_attribute('type')} id={inp.get_attribute('id')} placeholder={inp.get_attribute('placeholder')}")
 
-        time.sleep(4)
+        # Print ALL buttons found
+        buttons = page.query_selector_all('button, input[type="submit"]')
+        print(f"Found {len(buttons)} buttons:")
+        for i, btn in enumerate(buttons):
+            print(f"  Button {i}: text={btn.inner_text()} type={btn.get_attribute('type')} id={btn.get_attribute('id')}")
 
-        # Step 2 — Now fill the username field inside the modal
-        print(f"Filling username: {MINECRAFT_USERNAME}")
-        try:
+        browser.close()
+
+if __name__ == "__main__":
+    run_vote()        try:
             page.fill('input[name="voter_name"]', MINECRAFT_USERNAME, timeout=15000)
             print("Username filled!")
         except:

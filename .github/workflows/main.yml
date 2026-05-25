@@ -11,6 +11,7 @@ env:
 jobs:
   vote:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,11 +26,16 @@ jobs:
           playwright install chromium
           playwright install-deps
 
-      - name: Run Vote Script
-        run: python vote.py
+      - name: Run Vote Scripts
+        run: |
+          python vote.py
+          python vote2.py
 
-      - name: Upload screenshot
+      - name: Upload screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vote-screenshot
-          path: vote_result.png
+          name: vote-screenshots
+          path: |
+            vote_result.png
+            vote_result2.png

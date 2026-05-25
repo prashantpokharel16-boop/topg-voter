@@ -6,7 +6,7 @@ URL = "https://topg.org/minecraft-servers/server-654317"
 with sync_playwright() as p:
 
     browser = p.chromium.launch(
-        headless=False,   # IMPORTANT FOR DEBUGGING
+        headless=True,   # IMPORTANT FOR DEBUGGING
         slow_mo=500
     )
 

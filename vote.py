@@ -16,13 +16,19 @@ with sync_playwright() as p:
 
     time.sleep(5)
 
+    print("Opening vote popup...")
+
+    page.click("#openModal")
+
+    time.sleep(3)
+
     print("Filling username...")
 
     page.fill("#game_user", USERNAME)
 
     time.sleep(2)
 
-    print("Clicking submit...")
+    print("Submitting vote...")
 
     page.click("#submit")
 

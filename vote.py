@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 import time
 
-USERNAME = "SAROJGMR"
+USERNAME = "SAROJGMG"
 URL = "https://topg.org/minecraft-servers/server-654317"
 
 with sync_playwright() as p:

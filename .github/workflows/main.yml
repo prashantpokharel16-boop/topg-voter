@@ -1,14 +1,45 @@
-name: Test Scheduler
+name: TopG Auto Voter - SAROJGMG
+
+permissions:
+  contents: read
 
 on:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '2 0 * * *'
+    - cron: '2 6 * * *'
+    - cron: '2 12 * * *'
+    - cron: '2 18 * * *'
+
   workflow_dispatch:
 
 jobs:
-  test:
+  vote:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print time
-        run: date
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium
+          playwright install-deps
+
+      - name: Run Vote Scripts
+        run: |
+          python vote.py
+          python vote1.py
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vote-screenshots
+          path: |
+            vote_result.png
+            vote_result1.png

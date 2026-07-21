@@ -38,6 +38,7 @@ jobs:
         run: |
           python vote.py
           python vote1.py
+          python vote3.py
 
       - name: Upload screenshots
         if: always()
@@ -47,3 +48,4 @@ jobs:
           path: |
             vote_result.png
             vote_result1.png
+            vote_result2.png
